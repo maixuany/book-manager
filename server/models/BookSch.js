@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const BookSch = new schema({
-  book_id: { type: schema.Types.ObjectId, required: true },
   name: { type: String, require: true, unique: true },
   added_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
