@@ -16,6 +16,7 @@ const auth = async (req, res, next) => {
         .status(httpStatus.NOT_FOUND)
         .send({ message: "User token does not exist".toUpperCase() });
     req.data = payload;
+    req.token = token;
     next();
   } catch (error) {
     return res
