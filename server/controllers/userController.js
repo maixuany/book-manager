@@ -3,6 +3,24 @@ const bcrypt = require("bcrypt");
 const userSch = require("../models/UserSch");
 const userController = {};
 
+userController.getme = async (req, res) => {
+  try {
+    const me = await userSch.findOne({ username: req.data.username });
+    if (!me)
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .send({ message: "not found user".toUpperCase() });
+    const { password, access_token, ...dataRes } = me._doc;
+    return res
+      .status(httpStatus.OK)
+      .send({ data: dataRes, message: "get data success".toUpperCase() });
+  } catch (error) {
+    return res
+      .status(httpStatus.INTERNAL_SERVER_ERROR)
+      .send({ message: error.message.toUpperCase() });
+  }
+};
+
 userController.edit = async (req, res) => {
   try {
     const { fullname, username } = req.data;

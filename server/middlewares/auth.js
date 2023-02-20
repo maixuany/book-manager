@@ -8,8 +8,8 @@ const auth = async (req, res, next) => {
       .status(httpStatus.FORBIDDEN)
       .send({ message: "FORBIDDEN".toUpperCase() });
   const token = req.header("Authorization").replace("Bearer ", "");
-  const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   try {
+    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     const user = await UserSch.findOne({ username: payload.username });
     if (!user || !user.access_token.includes(token))
       return res
@@ -19,9 +19,25 @@ const auth = async (req, res, next) => {
     req.token = token;
     next();
   } catch (error) {
-    return res
-      .status(httpStatus.INTERNAL_SERVER_ERROR)
-      .send({ message: "INTERNAL_SERVER_ERROR".toUpperCase() });
+    if (error.name === "TokenExpiredError") {
+      const expiredToken = token;
+      const user = await UserSch.findOneAndUpdate(
+        { access_token: token },
+        { $pull: { access_token: token } },
+        { new: true }
+      );
+      if (user) {
+        return res
+          .status(httpStatus.UNAUTHORIZED)
+          .json({
+            message: `Expired token ${expiredToken} has been removed from user ${user._id}`,
+          });
+      }
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      message:
+        "INTERNAL_SERVER_ERROR ".toUpperCase() + error.message.toUpperCase(),
+    });
   }
 };
 
