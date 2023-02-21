@@ -73,7 +73,7 @@ authController.register = async (req, res) => {
         access_token: [access_token],
       });
       await newUser.save();
-      return res.status(httpStatus.OK).send({
+      return res.status(httpStatus.CREATED).send({
         data: { payloadJWT, access_token },
         message: "Register Success".toUpperCase(),
       });

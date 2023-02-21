@@ -26,7 +26,7 @@ bookController.create = async (req, res) => {
       path: "by_user",
       select: "-password -access_token",
     });
-    return res.status(httpStatus.OK).send({
+    return res.status(httpStatus.CREATED).send({
       data: dataRes,
       message: "Added Success".toUpperCase(),
     });
