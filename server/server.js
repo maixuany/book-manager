@@ -23,7 +23,7 @@ app.use("/api/v1", router);
 
 app.use(function (req, res, next) {
   req.client_ip_address = requestIp.getClientIp(req);
-  res.header("Access-Control-Allow-Origin", "http://localhost:3001");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
     "Authorization, Origin, X-Requested-With, Content-Type, Accept"
