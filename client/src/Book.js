@@ -1,4 +1,12 @@
-export default function Book() {
+export default function Book(
+  _id,
+  name,
+  author,
+  added_at,
+  updated_at,
+  by_user,
+  url
+) {
   return (
     <div className="book">
       <div className="image">

@@ -86,6 +86,7 @@ bookController.update = async (req, res) => {
           .send({ message: "Access Dined" });
       book.name = name;
       book.author = author;
+      book.updated_at = Date.now();
       await book.save();
     } else {
       if (!me._id.equals(book.by_user)) {
@@ -98,6 +99,7 @@ bookController.update = async (req, res) => {
       }
       book.name = name;
       book.author = author;
+      book.updated_at = Date.now();
       const old_url = book.url;
       book.url = "/upload/" + req.namefile;
       await book.save();
