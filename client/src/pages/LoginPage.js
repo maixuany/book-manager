@@ -1,11 +1,13 @@
+import Cookies from "js-cookie";
 import { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const { setUserInfo } = useContext(UserContext);
+  const { setUserInfo, userInfo } = useContext(UserContext);
 
   async function login(ev) {
     ev.preventDefault();
@@ -18,8 +20,8 @@ export default function LoginPage() {
       });
       if (response.ok) {
         response.json().then((payload) => {
-          console.log(payload.data);
-          setUserInfo(payload.data);
+          Cookies.set("token", payload.data.token);
+          setUserInfo(payload.data.payload);
           setRedirect(true);
         });
       } else {
@@ -28,6 +30,12 @@ export default function LoginPage() {
     } catch (error) {
       console.log(error.message);
     }
+  }
+
+  const fullname = userInfo?.fullname;
+
+  if (redirect || fullname) {
+    return <Navigate to={"/"} />;
   }
 
   return (

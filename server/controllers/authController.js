@@ -23,7 +23,7 @@ authController.login = async (req, res) => {
         const token = generateAccessToken(payload);
         user.access_token.push(token);
         await user.save();
-        return res.cookie("token", token).status(httpStatus.OK).send({
+        return res.status(httpStatus.OK).send({
           data: { payload, token },
           message: "Login Success".toUpperCase(),
         });
@@ -65,16 +65,16 @@ authController.register = async (req, res) => {
         fullname: fullname,
         username: username.toLowerCase(),
       };
-      const access_token = generateAccessToken(payloadJWT);
+      const token = generateAccessToken(payloadJWT);
       const newUser = new userSch({
         fullname: fullname,
         username: username.toLowerCase(),
         password: hashPassword,
-        access_token: [access_token],
+        access_token: [token],
       });
       await newUser.save();
-      return res.cookie("token", access_token).status(httpStatus.CREATED).send({
-        data: { payloadJWT, access_token },
+      return res.status(httpStatus.CREATED).send({
+        data: { payload: payloadJWT, token: token },
         message: "Register Success".toUpperCase(),
       });
     } else {

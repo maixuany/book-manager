@@ -1,4 +1,6 @@
+import Cookies from "js-cookie";
 import { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
 
 export default function RegisterPage() {
@@ -6,7 +8,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [fullname, setFullname] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const { setUserInfo } = useContext(UserContext);
+  const { setUserInfo, userInfo } = useContext(UserContext);
 
   async function register(ev) {
     ev.preventDefault();
@@ -21,12 +23,24 @@ export default function RegisterPage() {
       );
       if (response.status === 201) {
         alert("registration successful");
+        response.json().then((payload) => {
+          Cookies.set("token", payload.data.token);
+          setUserInfo(payload.data.payload);
+          setRedirect(true);
+        });
       } else {
         alert("Register failed");
       }
     } catch (error) {
       alert("Register failed. Try again later.");
     }
+  }
+
+  const _fullname = userInfo?.fullname;
+
+  if (redirect || _fullname) {
+    console.log(_fullname);
+    return <Navigate to={"/"} />;
   }
 
   return (
