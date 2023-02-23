@@ -23,16 +23,16 @@ authController.login = async (req, res) => {
         const token = generateAccessToken(payload);
         user.access_token.push(token);
         await user.save();
-        return res.status(httpStatus.OK).send({
+        return res.cookie("token", token).status(httpStatus.OK).send({
           data: { payload, token },
           message: "Login Success".toUpperCase(),
         });
       }
     }
   } catch (error) {
-    return res
-      .status(httpStatus.INTERNAL_SERVER_ERROR)
-      .send({ message: "INTERNAL_SERVER_ERROR".toUpperCase() });
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      message: "INTERNAL_SERVER_ERROR ".toUpperCase() + error.message,
+    });
   }
 };
 
@@ -73,7 +73,7 @@ authController.register = async (req, res) => {
         access_token: [access_token],
       });
       await newUser.save();
-      return res.status(httpStatus.CREATED).send({
+      return res.cookie("token", access_token).status(httpStatus.CREATED).send({
         data: { payloadJWT, access_token },
         message: "Register Success".toUpperCase(),
       });

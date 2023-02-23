@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
-import { Admin, Resource } from "react-admin";
-import BookList from "./components/book/books";
+import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import Layout from "./Layout";
+import IndexPage from "./pages/IndexPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
-  const [books, setBooks] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost:3000/api/v1/book")
-      .then((response) => response.json())
-      .then((payload) => setBooks(payload.data))
-      .catch((error) => console.log(error.message));
-  }, []);
   return (
-    <Admin>
-      <Resource name="books" list={BookList} data={books} />
-    </Admin>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<IndexPage />} />
+        <Route path={"/login"} element={<LoginPage />} />
+        <Route path={"/register"} element={<RegisterPage />} />
+      </Route>
+    </Routes>
   );
 }
 
