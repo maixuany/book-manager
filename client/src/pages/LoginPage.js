@@ -12,12 +12,15 @@ export default function LoginPage() {
   async function login(ev) {
     ev.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/v1/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://stry3k-3000.preview.csb.app/api/v1/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify({ username, password }),
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         response.json().then((payload) => {
           Cookies.set("token", payload.data.token);

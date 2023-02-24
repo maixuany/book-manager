@@ -5,7 +5,8 @@ export default function Book(
   added_at,
   updated_at,
   by_user,
-  url
+  url,
+  intro
 ) {
   return (
     <div className="book">

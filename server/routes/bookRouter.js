@@ -8,7 +8,7 @@ bookRouter.post("/", auth, upload.single("pdf"), bookController.create);
 bookRouter.get("/", bookController.getAll);
 bookRouter.get("/:id", bookController.getOne);
 bookRouter.delete("/:id", auth, bookController.delete);
-bookRouter.patch("/:id", auth, upload.single("pdf"), bookController.update);
+bookRouter.put("/:id", auth, upload.single("pdf"), bookController.update);
 bookRouter.use(handleUploadError);
 
 module.exports = bookRouter;

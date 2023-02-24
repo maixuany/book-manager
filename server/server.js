@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 8080;
 
 const app = express();
 
-app.use(cors({ credentials: true, origin: "http://localhost:3001" }));
+app.use(cors({ credentials: true, origin: "http://127.0.0.1:3001" }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));

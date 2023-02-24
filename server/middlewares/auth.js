@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
     const user = await UserSch.findOne({ username: payload.username });
     if (!user || !user.access_token.includes(token))
       return res
-        .status(httpStatus.NOT_FOUND)
+        .status(httpStatus.FORBIDDEN)
         .send({ message: "User token does not exist".toUpperCase() });
     req.data = payload;
     req.token = token;
@@ -27,11 +27,9 @@ const auth = async (req, res, next) => {
         { new: true }
       );
       if (user) {
-        return res
-          .status(httpStatus.UNAUTHORIZED)
-          .json({
-            message: `Expired token ${expiredToken} has been removed from user ${user._id}`,
-          });
+        return res.status(httpStatus.UNAUTHORIZED).json({
+          message: `Expired token ${expiredToken} has been removed from user ${user._id}`,
+        });
       }
     }
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({

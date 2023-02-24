@@ -7,6 +7,7 @@ const BookSch = new schema({
   updated_at: { type: Date, default: Date.now },
   author: { type: String },
   by_user: { type: schema.Types.ObjectId, ref: "user" },
+  intro: { type: String },
   url: { type: String, unique: true, required: true },
 });
 
